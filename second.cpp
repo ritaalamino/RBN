@@ -5,7 +5,7 @@ using namespace std;
 #include <bits/stdc++.h>
 //#include <QVector>
 #include <ctime>
-
+.
 
 map<int, function<int(int, int)>> logic_map{
         {0, [](int a, int b) { return a && b; }},
