@@ -44,15 +44,16 @@ class Graph{
         int **conex_Graph; //Grafo de conexão
         vector<vector<int>> f_Logica; //matriz de funções lógicas que pode ser substituida por vetor.
         Node *vertex_node; //Nó que guarda estado
-
+        vector<vector<Node>> h_States; //Matriz historico de estados
         Graph(int v_n){ //entra com o numero de nós
             srand(1);
             this->vertex_num = v_n;
             conex_Graph = new int *[vertex_num];
             vertex_node = new Node[vertex_num];
             for (int i = 0; i < vertex_num; i++){
+                h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
                 vertex_node[i] = Node();
-                //cout<< "estado adicionado: " <<v_node(i);
+                h_States[0].push_back(vertex_node[i].r_state());
                 f_Logica.push_back(vector<int>());
                 //f_Logica[i] = new int[vertex_num];
                 conex_Graph[i] = new int[vertex_num];
@@ -69,6 +70,7 @@ class Graph{
         void f_rand(){
             vector<int> aux;
             int aux2;
+            
             for (int i = 0; i < this->vertex_num;i++){
                 for (int j = 0; j < this->vertex_num; j++){
                     //cout << "vetor de estados";
@@ -89,6 +91,9 @@ class Graph{
                 }
                 this->vertex_node[i].w_state(aux[0]);
                 aux.clear();
+            }
+            for(int j=0;j<this->vertex_node;j++){
+                this->h_States[i].push_back(this->vertex_node[j].r_state());
             }
         }
 
@@ -128,6 +133,13 @@ class Graph{
                 }
                 cout<<"\n";
             }
+        }
+
+        int H_memory(){
+            for (int i = 0; i < this->vertex_num;i++){
+                this->h_States[i].push_back(this->vertex_node);
+            }
+            
         }
 
 };
