@@ -5,7 +5,6 @@ using namespace std;
 #include <bits/stdc++.h>
 //#include <QVector>
 #include <ctime>
-.
 
 map<int, function<int(int, int)>> logic_map{
         {0, [](int a, int b) { return a && b; }},
@@ -92,9 +91,6 @@ class Graph{
                 this->vertex_node[i].w_state(aux[0]);
                 aux.clear();
             }
-            for(int j=0;j<this->vertex_node;j++){
-                this->h_States[i].push_back(this->vertex_node[j].r_state());
-            }
         }
 
         int v_size(){
@@ -133,13 +129,6 @@ class Graph{
                 }
                 cout<<"\n";
             }
-        }
-
-        int H_memory(){
-            for (int i = 0; i < this->vertex_num;i++){
-                this->h_States[i].push_back(this->vertex_node);
-            }
-            
         }
 
 };
