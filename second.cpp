@@ -53,6 +53,7 @@ class Graph{
                 h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
                 vertex_node[i] = Node();
                 h_States[0].push_back(vertex_node[i].r_state());
+                //cout << h_States[0][i].r_state() << "teste" << endl;
                 f_Logica.push_back(vector<int>());
                 //f_Logica[i] = new int[vertex_num];
                 conex_Graph[i] = new int[vertex_num];
@@ -89,8 +90,20 @@ class Graph{
                     aux.erase(aux.begin());
                 }
                 this->vertex_node[i].w_state(aux[0]);
+                h_States[1].push_back(vertex_node[i].r_state());
                 aux.clear();
             }
+        }
+
+        int h_distance(){
+            int sum = 0;
+            for(int i = 0;i < this->h_States[i].size() ;i++){
+               if (this->h_States[0][i].r_state() != this->h_States[1][i].r_state()){
+                   sum+=1;
+               }
+            }
+            this->h_States[0] = this->h_States[1];
+            return sum;
         }
 
         int v_size(){
@@ -139,5 +152,6 @@ int main(){
     for(int i =0; i < 100;i++){
         m.f_rand();
         m.states();
+        cout << "Ham. Dist. " << m.h_distance() <<endl;
     }      
 }
