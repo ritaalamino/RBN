@@ -10,10 +10,12 @@ using namespace std;
 
 /*Dictionary for Conextions*/ 
 map<int, function<int(int, int)>> logic_map{
-/*AND*/ {0, [](int a, int b) { return a && b; }},
-/*OR*/  {1, [](int a, int b) { return a || b; }},
-/*NAND*/{2, [](int a, int b) { return !(a && b);}},
-/*NOR*/ {3, [](int a, int b) { return !(a || b);}}
+/*AND*/ {0, [](int a, int b) { return a & b; }},
+/*OR*/  {1, [](int a, int b) { return a | b; }},
+/*XOR*/ {2, [](int a, int b) { return a ^ b;}},
+/*XNOR*/{3, [](int a, int b) { return !(a ^ b);}},
+/*NAND*/{4, [](int a, int b) { return !(a & b);}},
+/*NOR*/ {5, [](int a, int b) { return !(a | b);}}
     };
 
 /*Node class that keeps state
@@ -78,7 +80,7 @@ class Graph{
                     this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                     this->conex_Graph[i][j] = rand()%2;
                     if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%4);
+                        this->f_Logica[i].push_back(rand()%6); //Number of logic functions
                     }
                 }                
             }
@@ -176,13 +178,13 @@ class Graph{
 
 int main(){
     int v_n,v_s,v_s2;
-    cout << "***********\nNumber of Vertex: ";   
+    cout << "\n***********\nNumber of Vertex: ";   
     //cin >> v_n;
     v_n = 10;
-    cout << "***********\nRandom Seed 1: ";   
+    cout << "\n***********\nRandom Seed 1: ";   
     //cin >> v_s;
     v_s = 1;
-    cout << "***********\nRandom Seed 2: ";   
+    cout << "\n***********\nRandom Seed 2: ";   
     v_s2 = 2;
     //cin >> v_s2;
     Graph m(v_n,v_s);
