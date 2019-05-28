@@ -13,9 +13,11 @@ map<int, function<int(int, int)>> logic_map{
 /*AND*/ {0, [](int a, int b) { return a & b; }},
 /*OR*/  {1, [](int a, int b) { return a | b; }},
 /*XOR*/ {2, [](int a, int b) { return a ^ b;}},
-/*XNOR*/{3, [](int a, int b) { return !(a ^ b);}},
-/*NAND*/{4, [](int a, int b) { return !(a & b);}},
-/*NOR*/ {5, [](int a, int b) { return !(a | b);}}
+/*NOT*/ {3, [](int a, int b) { return !a}},
+///*NOT*/ {2, [](int a, int b) { return !b}},
+/*XNOR*/{4, [](int a, int b) { return !(a ^ b);}},
+/*NAND*/{5, [](int a, int b) { return !(a & b);}},
+/*NOR*/ {6, [](int a, int b) { return !(a | b);}}
     };
 
 /*Node class that keeps state
@@ -52,7 +54,7 @@ conex_Graph it's a connection matrix
 vector it's the logic vector matrix for connections
 h_States it's a historic matrix
 */
-class Graph{
+class RBN{
     private:
         int vertex_num;
         int **conex_Graph; //Grafo de conexão
@@ -63,7 +65,7 @@ class Graph{
 
     public:        
         /*Recieves node number and random seed (v_n,r)*/
-        Graph(int v_n,int r){
+        RBN(int v_n,int r){
             srand(r);
             this->vertex_num = v_n;
             this->conex_Graph = new int *[vertex_num];
@@ -80,7 +82,7 @@ class Graph{
                     this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                     this->conex_Graph[i][j] = rand()%2;
                     if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%6); //Number of logic functions
+                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
                     }
                 }                
             }
@@ -92,7 +94,7 @@ class Graph{
             for (int i = 0; i < this->vertex_num;i++){
                 for (int j = 0; j < this->vertex_num; j++){
                     if (this->conex_Graph[i][j] == 1){
-                        aux.push_back(v_node(j));
+                        aux.push_back(get_node(j));
                     }
                 }
                 while (aux.size()>1){
@@ -109,7 +111,7 @@ class Graph{
             }
         }
         /*Ham Distance*/
-        double h_distance(Graph b){
+        double h_distance(RBN b){
             double sum = 0;
             float h_dist;
             for(int i = 0;i < this->vertex_num ;i++){
@@ -123,11 +125,11 @@ class Graph{
             return h_dist;
         }
 
-        int v_size(){
+        int get_size(){
             return vertex_num;
         }
         /*Returns state*/
-        int v_node(int i){
+        int get_node(int i){
             return this->vertex_node[i].r_state();
         }
         /*Print Probability*/
@@ -159,7 +161,7 @@ class Graph{
             cout<<"Estados: ";
             for (int i = 0; i < this->vertex_num; i++)
             {
-                    cout << v_node(i) << " ";
+                    cout << get_node(i) << " ";
             }
             cout << "\n";
         }
@@ -187,8 +189,8 @@ int main(){
     cout << "\n***********\nRandom Seed 2: ";   
     v_s2 = 2;
     //cin >> v_s2;
-    Graph m(v_n,v_s);
-    Graph n(v_n,v_s2);
+    RBN m(v_n,v_s);
+    RBN n(v_n,v_s2);
     cout << "m ";
     m.states();
     cout << "n ";
