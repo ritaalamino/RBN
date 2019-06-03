@@ -13,7 +13,7 @@ map<int, function<int(int, int)>> logic_map{
 /*AND*/ {0, [](int a, int b) { return a & b; }},
 /*OR*/  {1, [](int a, int b) { return a | b; }},
 /*XOR*/ {2, [](int a, int b) { return a ^ b;}},
-/*NOT*/ {3, [](int a, int b) { return !a}},
+/*NOT*/ {3, [](int a, int b) { return !a;}},
 ///*NOT*/ {2, [](int a, int b) { return !b}},
 /*XNOR*/{4, [](int a, int b) { return !(a ^ b);}},
 /*NAND*/{5, [](int a, int b) { return !(a & b);}},
@@ -192,17 +192,17 @@ int main(){
     RBN m(v_n,v_s);
     RBN n(v_n,v_s2);
     cout << "m ";
-    m.states();
+    m.outStates();
     cout << "n ";
-    n.states();
+    n.outStates();
     cout << "*-----------------------------\n";
     for(int i =0; i < steps; i++){
         m.f_rand();
         n.f_rand();
         cout << "m ";
-        m.states();
+        m.outStates();
         cout << "n ";
-        n.states();
+        n.outStates();
         cout << "------------------------------\n";
     }      
     cout << "Ham. Dist. " << m.h_distance(n) <<endl;
