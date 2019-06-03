@@ -7,53 +7,20 @@ using namespace std;
 //#include <QVector>
 #include <ctime>
 #define steps 10 /*Steps Tests*/
-
-/*Dictionary for Conextions*/ 
-map<int, function<int(int, int)>> logic_map{
-/*AND*/ {0, [](int a, int b) { return a & b; }},
-/*OR*/  {1, [](int a, int b) { return a | b; }},
-/*XOR*/ {2, [](int a, int b) { return a ^ b;}},
-/*NOT*/ {3, [](int a, int b) { return !a;}},
-///*NOT*/ {2, [](int a, int b) { return !b}},
-/*XNOR*/{4, [](int a, int b) { return !(a ^ b);}},
-/*NAND*/{5, [](int a, int b) { return !(a & b);}},
-/*NOR*/ {6, [](int a, int b) { return !(a | b);}}
-    };
+#include </home/ritaalamino/RBN/rbn.h>
 
 /*Node class that keeps state
 Could be used for a tree
 */
-class Node{
-    private:
-        int state; /*State RBN*/
-    public:
-        //Node *left;
-        //Node *right;
 
-        /*Intialize with random value 0 or 1*/
-        Node(){ 
-           //left = right = NULL;
-           this->state = rand()%2; //inicializa o nó com um valor aleatório
-        };
-        /*Defines new state*/
-        Node(int v){
-            //left = right = NULL;
-            this->state = v;
-        }
-        //Returns actual node state
-        int getState(){
-            return this->state; 
-        }
-        //Writes node state to rewrite matrix
-        int setState(int value){
-            this->state = value;
-        }
-};
+
+
 /*Class adjacency Matrix
 conex_Graph it's a connection matrix
 vector it's the logic vector matrix for connections
 h_States it's a historic matrix
 */
+//Usar QVector
 class RBN{
     private:
         int vertex_num;
@@ -62,6 +29,10 @@ class RBN{
         Node *vertex_node; //Nó que guarda estado
         vector<vector<int>> f_Logica; //matriz de funções lógicas que pode ser substituida por vetor
         vector<vector<Node>> h_States; //Matriz historico de estados
+
+//definir matriz de probabilidade de conexão (sortear uma probabilidade de 0 a 1 e se estiver dentro de p conecta (1)) ou (homogenea define um k) / heterogenea (um k pra cada nodo) pelo usuario
+//quantidade de conexões pré definidas
+//sortear os nodos que serão conectados
 
     public:        
         /*Recieves node number and random seed (v_n,r)*/
@@ -94,7 +65,7 @@ class RBN{
             for (int i = 0; i < this->vertex_num;i++){
                 for (int j = 0; j < this->vertex_num; j++){
                     if (this->conex_Graph[i][j] == 1){
-                        aux.push_back(getNode(j));
+                        aux.push_back(getNodeState(j));
                     }
                 }
                 while (aux.size()>1){
@@ -125,12 +96,20 @@ class RBN{
             return h_dist;
         }
 
+        float lExpoent(){
+
+        }
+
         int getSize(){
             return vertex_num;
         }
         /*Returns state*/
-        int getNode(int i){
+        int getNodeState(int i){
             return this->vertex_node[i].getState();
+        }
+
+        Node getNode(int i){
+            return this->vertex_node[i];
         }
         /*Print Probability*/
         void outProb(){
@@ -161,7 +140,7 @@ class RBN{
             cout<<"Estados: ";
             for (int i = 0; i < this->vertex_num; i++)
             {
-                    cout << getNode(i) << " ";
+                    cout << getNodeState(i) << " ";
             }
             cout << "\n";
         }
@@ -204,6 +183,7 @@ int main(){
         cout << "n ";
         n.outStates();
         cout << "------------------------------\n";
-    }      
+    }  
+    m.getNode(1).getCount();    
     cout << "Ham. Dist. " << m.h_distance(n) <<endl;
 }
