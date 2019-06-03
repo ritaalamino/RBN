@@ -41,11 +41,11 @@ class Node{
             this->state = v;
         }
         //Returns actual node state
-        int r_state(){
+        int getState(){
             return this->state; 
         }
         //Writes node state to rewrite matrix
-        int w_state(int value){
+        int setState(int value){
             this->state = value;
         }
 };
@@ -94,7 +94,7 @@ class RBN{
             for (int i = 0; i < this->vertex_num;i++){
                 for (int j = 0; j < this->vertex_num; j++){
                     if (this->conex_Graph[i][j] == 1){
-                        aux.push_back(get_node(j));
+                        aux.push_back(getNode(j));
                     }
                 }
                 while (aux.size()>1){
@@ -105,7 +105,7 @@ class RBN{
                     aux.erase(aux.begin());
                     aux.erase(aux.begin());
                 }
-                this->vertex_node[i].w_state(aux[0]);
+                this->vertex_node[i].setState(aux[0]);
                 h_States[i+1].push_back(vertex_node[i]);
                 aux.clear();
             }
@@ -116,7 +116,7 @@ class RBN{
             float h_dist;
             for(int i = 0;i < this->vertex_num ;i++){
                 for(int j = 0; j<this->vertex_num; j++){
-                    if (this->h_States[i][j].r_state() != b.h_States[i][j].r_state()){
+                    if (this->h_States[i][j].getState() != b.h_States[i][j].getState()){
                         sum+=1;                   
                     }
                 }
@@ -125,15 +125,15 @@ class RBN{
             return h_dist;
         }
 
-        int get_size(){
+        int getSize(){
             return vertex_num;
         }
         /*Returns state*/
-        int get_node(int i){
-            return this->vertex_node[i].r_state();
+        int getNode(int i){
+            return this->vertex_node[i].getState();
         }
         /*Print Probability*/
-        void prob(){
+        void outProb(){
             for (int i = 0; i < vertex_num; i++)
             {
                 cout << "\n";
@@ -145,7 +145,7 @@ class RBN{
         cout << "\n";
         }
         /*Print Connections*/
-        void conexions(){
+        void outConect(){
             for (int i = 0; i < vertex_num; i++)
             {
                 cout << "\n";
@@ -157,17 +157,17 @@ class RBN{
         cout << "\n";
         }
         /*Print States*/
-        void states(){
+        void outStates(){
             cout<<"Estados: ";
             for (int i = 0; i < this->vertex_num; i++)
             {
-                    cout << get_node(i) << " ";
+                    cout << getNode(i) << " ";
             }
             cout << "\n";
         }
 
         /*Prints connections logic*/
-        void logica(){
+        void outLogic(){
             for(vector<int> row: this->f_Logica){
                 for(int cel: row){
                     cout<< cel << " ";
