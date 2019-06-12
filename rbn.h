@@ -69,6 +69,7 @@ h_States it's a historic matrix
 
 class RBN{
 
+    
     protected:
         int vertex_num;
         int **conex_Graph; //Grafo de conexão
@@ -79,7 +80,23 @@ class RBN{
     public:
         RBN(int v_n,int r){
             srand(r);
-            this->vertex_num = v_n;
+            vertex_num = v_n;
+            conex_Graph = new int *[vertex_num];
+            vertex_node = new Node[vertex_num];
+            for (int i = 0; i < this->vertex_num; i++){
+                h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
+                vertex_node[i] = Node();
+                cout << this->vertex_node[i].getState() << " ";
+                h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
+                f_Logica.push_back(vector<int>());
+                conex_Graph[i] = new int[vertex_num];
+                for (int j = 0; j<vertex_num; j++){
+                    conex_Graph[i][j] = rand()%2;
+                    if (conex_Graph[i][j]==1){
+                        f_Logica[i].push_back(rand()%7); //Number of logic functions
+                    }
+                }
+            }
         }
 
         void generateRandom(){
@@ -210,25 +227,12 @@ class classicRBN : public RBN{
     public:
 
         classicRBN(int v_n, int r):RBN(v_n,r){
-
+            ///srand(r);
+            //this->vertex_num = v_n;
         }
 
         void createRBN(){
-            this->conex_Graph = new int *[vertex_num];
-            this->vertex_node = new Node[vertex_num];
-            for (int i = 0; i < vertex_num; i++){
-                this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-                this->vertex_node[i] = Node();
-                this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-                this->f_Logica.push_back(vector<int>());
-                this->conex_Graph[i] = new int[vertex_num];
-                for (int j = 0; j<vertex_num; j++){
-                    this->conex_Graph[i][j] = rand()%2;
-                    if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
-                    }
-                }                
-            }
+                
         }
 
         
