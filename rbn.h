@@ -28,16 +28,14 @@ class Node{
         int id;
 
     public:
-        Node(){ 
-            this->cont = this->cont + 1;
-            this->id = cont;
+        Node(){
+            this->id = ++cont;
             this->state = rand()%2; //inicializa o nó com um valor aleatório
         };
         /*Defines new state*/
         Node(int v){
             this->state = v;
-            this->cont = this->cont + 1;
-            this->id = cont;
+            this->id = ++cont;
         }
         //Returns actual node state
         int getState(){
@@ -56,3 +54,4 @@ class Node{
             return this->cont;
         }
 };
+int Node::cont = 0;
