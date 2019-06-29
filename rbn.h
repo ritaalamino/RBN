@@ -76,22 +76,7 @@ class RBN{
             this->vertex_num = v_n;
             this->conex_Graph = new int *[vertex_num];
             this->prob_Graph = new float *[vertex_num];
-            this->vertex_node = new Node[vertex_num];
-            for (int i = 0; i < vertex_num; i++){
-                this->prob_Graph[i] = new float[vertex_num];
-                this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-                this->vertex_node[i] = Node();
-                this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-                this->f_Logica.push_back(vector<int>());
-                this->conex_Graph[i] = new int[vertex_num];
-                for (int j = 0; j<vertex_num; j++){
-                    this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-                    this->conex_Graph[i][j] = rand()%2;
-                    if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
-                    }
-                }                
-            }
+            this->vertex_node = new Node[vertex_num];    
         }
 
         void f_rand(){
@@ -195,6 +180,21 @@ class RBN{
 class hetRBN: public RBN{
     
     hetRBN(int v_n, int r):RBN(v_n,r){
-
+        
+        for (int i = 0; i < vertex_num; i++){
+            this->prob_Graph[i] = new float[vertex_num];
+            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
+            this->vertex_node[i] = Node();
+            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
+            this->f_Logica.push_back(vector<int>());
+            this->conex_Graph[i] = new int[vertex_num];
+            for (int j = 0; j<vertex_num; j++){
+                this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+                this->conex_Graph[i][j] = rand()%2;
+                if (conex_Graph[i][j]==1){
+                    this->f_Logica[i].push_back(rand()%7); //Number of logic functions
+                }
+            }                
+        }
     }
-}
+};
