@@ -33,8 +33,8 @@ int main(){
     cout << "\n***********\nRandom Seed 2: ";   
     v_s2 = 2;
     //cin >> v_s2;
-    homRBN m(v_n,v_s,3);
-    homRBN n(v_n,v_s2,3);
+    probRBN m(v_n,v_s);
+    probRBN n(v_n,v_s2);
     cout << "m ";
     m.outStates();
     cout << "n ";
@@ -50,5 +50,5 @@ int main(){
         cout << "------------------------------\n";
     } */
     cout<<m.getNode(1).getCount();    
-    cout << "Ham. Dist. " << m.h_distance(n) <<endl;
+    //cout << "Ham. Dist. " << m.h_distance(n) <<endl;
 }

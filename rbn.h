@@ -192,25 +192,25 @@ class homRBN: public RBN{
             this->f_Logica.push_back(vector<int>());
             this->conex_Graph[i] = new int[vertex_num];
                 for (int j = 0; j<=vertex_num; j++){
-                if (j == vertex_num && counter < this->k){
-                    j = 0;
-                }
-                if (this->conex_Graph[i][j] != 1){
-                    this->conex_Graph[i][j] = rand()%2;
-                    if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
-                        counter ++;
+                    if (j == vertex_num && counter < this->k){
+                        j = 0;
                     }
-                }
-            }                
+                    if (this->conex_Graph[i][j] != 1){
+                        this->conex_Graph[i][j] = rand()%2;
+                        if (conex_Graph[i][j]==1){
+                            this->f_Logica[i].push_back(rand()%7); //Number of logic functions
+                            this->counter ++;
+                        }
+                    }
+                }                
+            }
         }
-    }
 };
 
 class hetRBN: public RBN{
     
-    hetRBN(int v_n, int r):RBN(v_n,r){
-        
+    public:
+    hetRBN(int v_n, int r):RBN(v_n,r){    
         for (int i = 0; i < vertex_num; i++){
             this->prob_Graph[i] = new float[vertex_num];
             this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
