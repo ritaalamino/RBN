@@ -19,27 +19,28 @@ map<int, function<int(int, int)>> logic_map{
 };
 
 //Criar vetor com edereços de nodos conectados
-//Criar ID do nodo
+//Criar ID do nodo ok
 
 class Node{
     private:
         int state; /*State RBN*/
-        int static cont;
         int id;
-
+        static int cont;
+        
     public:
         Node(){
             this->id = ++cont;
             this->state = rand()%2; //inicializa o nó com um valor aleatório
         };
-        /*Defines new state*/
+        /*New node with new state*/
         Node(int v){
+            this->id = ++cont;
             this->state = v;
             this->id = ++cont;
         }
         //Returns actual node state
         int getState(){
-            return this->state; 
+            return getCount(); 
         }
         //Writes node state to rewrite matrix
         int setState(int value){
