@@ -9,18 +9,6 @@ using namespace std;
 #define steps 10 /*Steps Tests*/
 #include </home/ritaalamino/RBN/rbn.h>
 
-/*Node class that keeps state
-Could be used for a tree
-*/
-
-
-
-/*Class adjacency Matrix
-conex_Graph it's a connection matrix
-vector it's the logic vector matrix for connections
-h_States it's a historic matrix
-*/
-//Usar QVector
 
 int main(){
     int v_n,v_s,v_s2;
@@ -32,24 +20,30 @@ int main(){
     v_s = 1;
     //cout << "\n***********\nRandom Seed 2: ";   
     v_s2 = 2;
+    vector<int> vector1;
+    for(int i=0; i<v_n; i++){
+        vector1.push_back(1);
+    }
     //cin >> v_s2;
-    homRBN m(v_n,v_s,5);
-    homRBN n(v_n,v_s2,5);
+    classicRBN m(v_n,v_s,vector1);
+    classicRBN n(v_n,v_s2,vector1);
     cout << "m ";
     m.outStates();
     cout << "n ";
     n.outStates();
+    cout << "Ham. Dist. " << m.h_distance(n) <<endl;
     cout << "*-----------------------------\n";
-    /*for(int i =0; i < steps; i++){
-        m.f_rand();
-        n.f_rand();
+    for(int i =0; i < steps; i++){
+        m.fRand();
+        n.fRand();
         cout << "m ";
         m.outStates();
         cout << "n ";
         n.outStates();
+        cout << "Ham. Dist. " << m.h_distance(n) <<endl;
         cout << "------------------------------\n";
-    } */
-    m.outConnect();
+    } 
+    //m.outConnect();
     //cout<<m.getNode(1).getCount();    
-    //cout << "Ham. Dist. " << m.h_distance(n) <<endl;
+    
 }

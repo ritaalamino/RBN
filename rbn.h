@@ -18,9 +18,6 @@ map<int, function<int(int, int)>> logic_map{
 /*NOR*/ {6, [](int a, int b) { return !(a | b);}}
 };
 
-//Criar vetor com edereços de nodos conectados
-//Criar ID do nodo
-
 class Node{
     private:
         int state; /*State RBN*/
@@ -29,29 +26,29 @@ class Node{
 
     public:
         Node(){
-            this->id = ++cont;
-            this->state = rand()%2; //inicializa o nó com um valor aleatório
+            id = ++cont;
+            state = rand()%2;
         };
-        /*Defines new state*/
+        
         Node(int v){
-            this->state = v;
-            this->id = ++cont;
+            state = v;
+            id = ++cont;
         }
         //Returns actual node state
         int getState(){
-            return this->state; 
+            return state; 
         }
         //Writes node state to rewrite matrix
         int setState(int value){
-            this->state = value;
+            state = value;
         }
 
         int getID(){
-            return this->id;
+            return id;
         }
 
         int getCount(){
-            return this->cont;
+            return cont;
         }
 };
 int Node::cont = 0;
@@ -59,43 +56,43 @@ int Node::cont = 0;
 class RBN{
     protected:
         int vertex_num;
-        int **conex_Graph; //Grafo de conexão
-        float **prob_Graph; //Grafo de probabilidade da conexão
-        Node *vertex_node; //Nó que guarda estado
-        vector<vector<int>> f_Logica; //matriz de funções lógicas que pode ser substituida por vetor
-        vector<vector<Node>> h_States; //Matriz historico de estados
+        vector<vector<int>> conex_Graph;
+        vector<Node> vertex_node;
+        vector<vector<int>> f_Logica;
+        vector<vector<Node>> h_States;
 
-    //definir matriz de probabilidade de conexão (sortear uma probabilidade de 0 a 1 e se estiver dentro de p conecta (1)) ou (homogenea define um k) / heterogenea (um k pra cada nodo) pelo usuario
-    //quantidade de conexões pré definidas
-    //sortear os nodos que serão conectados
     public:        
         /*Recieves node number and random seed (v_n,r)*/
         RBN(int v_n,int r){
             srand(r);
-            this->vertex_num = v_n;
-            this->conex_Graph = new int *[vertex_num];
-            this->prob_Graph = new float *[vertex_num];
-            this->vertex_node = new Node[vertex_num];    
+            vertex_num = v_n;
+            for(int i = 0; i < vertex_num; i++){
+                conex_Graph.push_back(vector<int>());
+                vertex_node.push_back(Node());
+                for(int j = 0; j < vertex_num; j++){
+                    conex_Graph[i].push_back(-1);
+                }
+            }   
         }
 
-        void f_rand(){
+        void fRand(){
             vector<int> aux;
             int aux2;
-            for (int i = 0; i < this->vertex_num;i++){
-                for (int j = 0; j < this->vertex_num; j++){
-                    if (this->conex_Graph[i][j] == 1){
+            for (int i = 0; i < vertex_num;i++){
+                for (int j = 0; j < vertex_num; j++){
+                    if (conex_Graph[i][j] == 1){
                         aux.push_back(getNodeState(j));
                     }
                 }
                 while (aux.size()>1){
-                    aux2 = this->f_Logica[i].front();
-                    this->f_Logica[i].push_back(aux2);
-                    this->f_Logica[i].erase(f_Logica[i].begin());
+                    aux2 = f_Logica[i].front();
+                    f_Logica[i].push_back(aux2);
+                    f_Logica[i].erase(f_Logica[i].begin());
                     aux.push_back(logic_map[aux2](aux[0],aux[1]));
                     aux.erase(aux.begin());
                     aux.erase(aux.begin());
                 }
-                this->vertex_node[i].setState(aux[0]);
+                vertex_node[i].setState(aux[0]);
                 h_States[i+1].push_back(vertex_node[i]);
                 aux.clear();
             }
@@ -103,15 +100,13 @@ class RBN{
         /*Ham Distance FIX*/
         double h_distance(RBN b){
             double sum = 0;
-            float h_dist;
-            for(int i = 0;i < this->vertex_num ;i++){
-                for(int j = 0; j<this->vertex_num; j++){
-                    if (this->h_States[i][j].getState() != b.h_States[i][j].getState()){
-                        sum+=1;                   
-                    }
+            float h_dist = 0;
+            for(int j = 0; j<vertex_num; j++){
+                if (vertex_node[j].getState() != b.vertex_node[j].getState()){
+                    sum+=1;                   
                 }
             }
-            h_dist = (sum/steps);
+            h_dist = (sum/vertex_num);
             return h_dist;
         }
         
@@ -124,23 +119,11 @@ class RBN{
         }
         /*Returns state*/
         int getNodeState(int i){
-            return this->vertex_node[i].getState();
+            return vertex_node[i].getState();
         }
 
         Node getNode(int i){
-            return this->vertex_node[i];
-        }
-        /*Print Probability*/
-        void outProb(){
-            for (int i = 0; i < vertex_num; i++)
-            {
-                cout << "\n";
-                for (int j = 0; j < vertex_num; j++)
-                {
-                    cout << this->prob_Graph[i][j] << " ";
-                }
-            }
-        cout << "\n";
+            return vertex_node[i];
         }
         /*Print Connections*/
         void outConnect(){
@@ -149,7 +132,7 @@ class RBN{
                 cout << "\n";
                 for (int j = 0; j < vertex_num; j++)
                 {
-                    cout << this->conex_Graph[i][j] << " ";
+                    cout << conex_Graph[i][j] << " ";
                 }
             }
         cout << "\n";
@@ -157,7 +140,7 @@ class RBN{
         /*Print States*/
         void outStates(){
             cout<<"Estados: ";
-            for (int i = 0; i < this->vertex_num; i++)
+            for (int i = 0; i < vertex_num; i++)
             {
                     cout << getNodeState(i) << " ";
             }
@@ -166,7 +149,7 @@ class RBN{
 
         /*Prints connections logic*/
         void outLogic(){
-            for(vector<int> row: this->f_Logica){
+            for(vector<int> row: f_Logica){
                 for(int cel: row){
                     cout<< cel << " ";
                 }
@@ -176,7 +159,6 @@ class RBN{
 
 };
 
-//FIX
 class homRBN: public RBN{
     private:
         int k;
@@ -185,60 +167,35 @@ class homRBN: public RBN{
     homRBN(int v_n, int r,int c): RBN(v_n, r){
         for (int i = 0; i < vertex_num; i++){
             k = c;
-            //this->prob_Graph[i] = new float[vertex_num];
-            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-            this->vertex_node[i] = Node();
-            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-            this->f_Logica.push_back(vector<int>());
-            this->conex_Graph[i] = new int[vertex_num];
+            h_States.push_back(vector<Node>());
+            h_States[0].push_back(vertex_node[i]);
+            f_Logica.push_back(vector<int>());
             for (int j = 0; j<vertex_num; j++){
-                //this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                 if (k!=0){
-                    if(this->conex_Graph[i][j]!=1){
-                        this->conex_Graph[i][j] = rand()%2;
+                    if(conex_Graph[i][j]!=1){
+                        conex_Graph[i][j] = rand()%2;
                     }
                     if (j == vertex_num-1){
                         int l = 0;
                         while(k!=0){
-                            if(this->conex_Graph[i][l]!=1){
-                               this->conex_Graph[i][l] = rand()%2;
-                               if(this->conex_Graph[i][l] == 1) k--; 
+                            if(conex_Graph[i][l]!=1){
+                               conex_Graph[i][l] = rand()%2;
+                               if(conex_Graph[i][l] == 1) k--; 
                             }
                             l++;
                         }
                     }
                 }
                 else{
-                    this->conex_Graph[i][j] = 0;
+                    conex_Graph[i][j] = 0;
                 }
                 if (conex_Graph[i][j]==1){
                     k = k - 1;
-                    this->f_Logica[i].push_back(rand()%7); //Number of logic function
+                    f_Logica[i].push_back(rand()%7); //Number of logic function
                 }
             }                
         }
-
-        /*
-        for (int i = 0; i < vertex_num; i++){
-            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-            this->vertex_node[i] = Node();
-            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-            this->f_Logica.push_back(vector<int>());
-            this->conex_Graph[i] = new int[vertex_num];
-                for (int j = 0; j<=vertex_num; j++){
-                    if (j == vertex_num && this->counter < this->k){
-                        j = 0;
-                    }
-                    if (this->conex_Graph[i][j] != 1){
-                        this->conex_Graph[i][j] = rand()%2;
-                        if (conex_Graph[i][j]==1){
-                            this->f_Logica[i].push_back(rand()%7); //Number of logic functions
-                            //this->counter ++;
-                        }
-                    }
-                }                
-            }*/
-        }
+    }
 };
 
 class hetRBN: public RBN{
@@ -246,17 +203,13 @@ class hetRBN: public RBN{
     public:
     hetRBN(int v_n, int r):RBN(v_n,r){    
         for (int i = 0; i < vertex_num; i++){
-            //this->prob_Graph[i] = new float[vertex_num];
-            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-            this->vertex_node[i] = Node();
-            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-            this->f_Logica.push_back(vector<int>());
-            this->conex_Graph[i] = new int[vertex_num];
+            h_States.push_back(vector<Node>());
+            h_States[0].push_back(vertex_node[i]);
+            f_Logica.push_back(vector<int>());
             for (int j = 0; j<vertex_num; j++){
-                //this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-                this->conex_Graph[i][j] = rand()%2;
+                conex_Graph[i][j] = rand()%2;
                 if (conex_Graph[i][j]==1){
-                    this->f_Logica[i].push_back(rand()%7); //Number of logic functions
+                    f_Logica[i].push_back(rand()%7);
                 }
             }                
         }
@@ -266,35 +219,20 @@ class hetRBN: public RBN{
 //TEST
 class classicRBN: public RBN{
     
-    private:
-        vector<int> k;
-        int counter;
-
     public:
-    classicRBN(int v_n, int r, vector<int> c): RBN(v_n,r){
-        this->k = c;
-        this->counter = 0;
-            for (int i = 0; i < vertex_num; i++){
-            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-            this->vertex_node[i] = Node();
-            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-            this->f_Logica.push_back(vector<int>());
-            this->conex_Graph[i] = new int[vertex_num];
-                for (int j = 0; j<=vertex_num; j++){
-                if (j == vertex_num && counter < this->k[i]){
-                    j = 0;
-                }
-                if (this->conex_Graph[i][j] != 1){
-                    this->conex_Graph[i][j] = rand()%2;
-                    if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
-                        counter ++;
-                    }
+        classicRBN(int v_n, int r, vector<int> c): RBN(v_n,r){
+        for (int i = 0; i < vertex_num; i++){
+            h_States.push_back(vector<Node>());
+            h_States[0].push_back(vertex_node[i]);
+            f_Logica.push_back(vector<int>());
+            conex_Graph[i] = c;
+            for (int j = 0; j<vertex_num; j++){
+                if (conex_Graph[i][j]==1){
+                    f_Logica[i].push_back(rand()%7);
                 }
             }                
         }
-    }
-
+    }  
 };
 
 class probRBN: public RBN{
@@ -303,44 +241,40 @@ class probRBN: public RBN{
 
     public:
     probRBN(int v_n,int r): RBN(v_n, r){
-        this->probability = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        probability = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         for (int i = 0; i < vertex_num; i++){
-            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-            this->vertex_node[i] = Node(); //Initial random state
-            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-            this->f_Logica.push_back(vector<int>());
-            this->conex_Graph[i] = new int[vertex_num];
+            h_States.push_back(vector<Node>());
+            h_States[0].push_back(vertex_node[i]);
+            f_Logica.push_back(vector<int>());
             for (int j = 0; j<vertex_num; j++){ 
-                if((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) <= this->probability){
-                    this->conex_Graph[i][j] = 1;
+                if((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) <= probability){
+                    conex_Graph[i][j] = 1;
                     if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
+                        f_Logica[i].push_back(rand()%7);
                     }
                 }
                 else{
-                    this->conex_Graph[i][j] = 0;
+                    conex_Graph[i][j] = 0;
                 }
             }                
         }
     }
     probRBN(int v_n,int r,float p): RBN(v_n, r){
-        this->probability = p;
+        probability = p;
         for (int i = 0; i < vertex_num; i++){
-            this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
-            this->vertex_node[i] = Node(); //Initial random state
-            this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
-            this->f_Logica.push_back(vector<int>());
-            this->conex_Graph[i] = new int[vertex_num];
+            h_States.push_back(vector<Node>());
+            h_States[0].push_back(vertex_node[i]);
+            f_Logica.push_back(vector<int>());
             cout<<p<<endl;
             for (int j = 0; j<vertex_num; j++){ 
-                if((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) <= this->probability){
-                    this->conex_Graph[i][j] = 1;
+                if((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) <= probability){
+                    conex_Graph[i][j] = 1;
                     if (conex_Graph[i][j]==1){
-                        this->f_Logica[i].push_back(rand()%7); //Number of logic functions
+                        f_Logica[i].push_back(rand()%7);
                     }
                 }
                 else{
-                    this->conex_Graph[i][j] = 0;
+                    conex_Graph[i][j] = 0;
                 }
             }                
         }
