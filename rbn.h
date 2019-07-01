@@ -193,17 +193,26 @@ class homRBN: public RBN{
             this->conex_Graph[i] = new int[vertex_num];
             for (int j = 0; j<vertex_num; j++){
                 //this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-                if (k!=0 && this->conex_Graph[i][j]!=1){
-                    if(j == vertex_num-1){
-                        j=0;
+                if (k!=0){
+                    if(this->conex_Graph[i][j]!=1){
+                        this->conex_Graph[i][j] = rand()%2;
                     }
-                    this->conex_Graph[i][j] = rand()%2;
+                    if (j == vertex_num-1){
+                        int l = 0;
+                        while(k!=0){
+                            if(this->conex_Graph[i][l]!=1){
+                               this->conex_Graph[i][l] = rand()%2;
+                               if(this->conex_Graph[i][l] == 1) k--; 
+                            }
+                            l++;
+                        }
+                    }
                 }
                 else{
                     this->conex_Graph[i][j] = 0;
                 }
                 if (conex_Graph[i][j]==1){
-                    k -= 1;
+                    k = k - 1;
                     this->f_Logica[i].push_back(rand()%7); //Number of logic function
                 }
             }                
