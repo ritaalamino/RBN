@@ -19,28 +19,27 @@ map<int, function<int(int, int)>> logic_map{
 };
 
 //Criar vetor com edereços de nodos conectados
-//Criar ID do nodo ok
+//Criar ID do nodo
 
 class Node{
     private:
         int state; /*State RBN*/
+        int static cont;
         int id;
-        static int cont;
-        
+
     public:
         Node(){
             this->id = ++cont;
             this->state = rand()%2; //inicializa o nó com um valor aleatório
         };
-        /*New node with new state*/
+        /*Defines new state*/
         Node(int v){
-            this->id = ++cont;
             this->state = v;
             this->id = ++cont;
         }
         //Returns actual node state
         int getState(){
-            return getCount(); 
+            return this->state; 
         }
         //Writes node state to rewrite matrix
         int setState(int value){
@@ -213,12 +212,14 @@ class hetRBN: public RBN{
     public:
     hetRBN(int v_n, int r):RBN(v_n,r){    
         for (int i = 0; i < vertex_num; i++){
+            this->prob_Graph[i] = new float[vertex_num];
             this->h_States.push_back(vector<Node>()); //suposta inicialização do historico de estados
             this->vertex_node[i] = Node();
             this->h_States[0].push_back(vertex_node[i]); //it registers first line at hisotirc
             this->f_Logica.push_back(vector<int>());
             this->conex_Graph[i] = new int[vertex_num];
             for (int j = 0; j<vertex_num; j++){
+                this->prob_Graph[i][j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                 this->conex_Graph[i][j] = rand()%2;
                 if (conex_Graph[i][j]==1){
                     this->f_Logica[i].push_back(rand()%7); //Number of logic functions
