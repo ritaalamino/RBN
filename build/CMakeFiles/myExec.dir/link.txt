@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/myExec.dir/src/main.cpp.o  -o myExec -Wl,-rpath,/home/copt/random-boolean-network/build librbn_net.so 

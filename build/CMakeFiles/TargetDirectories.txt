@@ -1,0 +1,4 @@
+/home/copt/random-boolean-network/build/CMakeFiles/rebuild_cache.dir
+/home/copt/random-boolean-network/build/CMakeFiles/edit_cache.dir
+/home/copt/random-boolean-network/build/CMakeFiles/rbn_net.dir
+/home/copt/random-boolean-network/build/CMakeFiles/myExec.dir

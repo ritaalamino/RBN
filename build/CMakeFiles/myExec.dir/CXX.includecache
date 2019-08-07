@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/io/rbnexport.h
+fstream
+-
+iostream
+-
+network/rbn.h
+../include/io/network/rbn.h
+
+../include/network/rbn.h
+vector
+-
+bits/stdc++.h
+../include/network/bits/stdc++.h
+util/node.h
+../include/network/util/node.h
+
+../include/network/util/node.h
+
+/home/copt/random-boolean-network/src/main.cpp
+network/rbn.h
+/home/copt/random-boolean-network/src/network/rbn.h
+io/rbnexport.h
+/home/copt/random-boolean-network/src/io/rbnexport.h
+iostream
+-
+
