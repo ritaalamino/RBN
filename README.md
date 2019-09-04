@@ -1,5 +1,7 @@
 # RBN
 Random Boolean Network C++
+It can be used for topological analysis of graphs that have states and connections.
+Pode ser utilizado para fazer análise topológica de grafos que possuem estados e conexões.
 
 This implementation uses adjacency matrix. A RBN representation for the boolean network.
 The connections_graph it's the connection matrix
